@@ -1,0 +1,10 @@
+{
+    "useClickOutside": {
+        "scope": "javascript,typescript,javascriptreact,typescriptreact",
+        "prefix": "useClickOutside",
+        "body": [
+            "import {useEffect} from \"react\";\r\n\r\nexport function useClickOutside(ref: React.MutableRefObject<null | HTMLElement>, callback: () => void) {\r\n    useEffect(() => {\r\n        function handleClickOutside(event: MouseEvent) {\r\n            if (ref.current && !ref.current.contains(event.target as Node)) {\r\n                callback();\r\n            }\r\n        }\r\n        document.addEventListener(\"mousedown\", handleClickOutside);\r\n        return () => {\r\n            document.removeEventListener(\"mousedown\", handleClickOutside);\r\n        };\r\n    }, [ref]);\r\n}\r\n"
+        ],
+        "description": "callback on click outside the element"
+    }
+}
