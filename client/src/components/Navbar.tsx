@@ -1,11 +1,14 @@
-import {FormEvent, useState} from "react";
-import LoginForm from "./LoginForm";
+import {FormEvent, useEffect, useState} from "react";
+import LoginRegisterWrapper from "./LoginRegisterWrapper";
 import {useSearchParams} from "react-router-dom";
 import {useDataContext} from "../context/DataContext";
+import {useAuthContext} from "../context/AuthContext";
+import UserInfoBar from "./UserInfoBar";
 
 function Navbar() {
     const [show, setShow] = useState<boolean>(false);
     const {updateSearchedQuery} = useDataContext();
+    const {user} = useAuthContext();
 
     const handleShow = () => {
         setShow((prev) => !prev);
@@ -46,15 +49,19 @@ function Navbar() {
                     <button className="border border-s-0 h-12 px-2 border-black hover:bg-mainGreen rounded-e-sm shadow-md">Search</button>
                 </form>
                 <div className="ms-auto">
-                    <button
-                        onClick={handleShow}
-                        className="w-24 bg-mainGreen border-mainGreen rounded-lg px-5 py-2 font-semibold transition text-zinc-600 hover:scale-105 hover:border hover:border-b-4 hover:border-e-4 hover:border-zinc-600 focus:ring-4">
-                        Login
-                    </button>
+                    {!user ? (
+                        <button
+                            onClick={handleShow}
+                            className="w-24 bg-mainGreen border-mainGreen rounded-lg px-5 py-2 font-semibold transition text-zinc-600 hover:scale-105 hover:border hover:border-b-4 hover:border-e-4 hover:border-zinc-600 focus:ring-4">
+                            Login
+                        </button>
+                    ) : (
+                        <UserInfoBar></UserInfoBar>
+                    )}
                 </div>
             </nav>
 
-            <LoginForm show={show} handleShow={handleShow} />
+            {!user && <LoginRegisterWrapper show={show} handleShow={handleShow} />}
         </header>
     );
 }

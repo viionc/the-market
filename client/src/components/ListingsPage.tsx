@@ -8,8 +8,8 @@ function ListingsPage() {
         <section className="container w-full flex gap-2">
             <ListingsSidebar />
             <div className="flex flex-col gap-2 w-full p-6">
-                {listings.map((listing) => {
-                    return <Listing key={listing.id} listing={listing} />;
+                {listings.map((listing, index) => {
+                    return <Listing key={index} listing={listing} />;
                 })}
             </div>
         </section>
