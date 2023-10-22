@@ -8,8 +8,11 @@ export type User = {
 
 export type ListingProps = {
     username: string;
+    category: Categories;
+    durationInDays: number;
     title: string;
-    dateCreatedAt: number;
+    createdAt: string;
+    updatedAt: string;
     originalPrice: number;
     description: string;
     image: FileList | null | string;
@@ -22,3 +25,16 @@ export type AuthStatus = {
     isSuccess: boolean;
     message: string;
 };
+export type Categories =
+    | "Antiques"
+    | "Art"
+    | "Books"
+    | "Cameras & Photo"
+    | "Cell Phones & Accessories"
+    | "Clothing & Shoes & Accessories"
+    | "Computers/Tablets & Accessories"
+    | "DVDs & Movies"
+    | "Gift Cards"
+    | "Health & Beauty"
+    | "Sports"
+    | "Video Games";

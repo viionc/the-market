@@ -1,15 +1,19 @@
-import {ReactNode, createContext, useContext, useState} from "react";
+import {ReactNode, createContext, useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {ListingProps, User} from "../types/types";
+import {Categories, ListingProps, User} from "../types/types";
 import dataService from "../services/DataService";
 
 type DataContext = {
-    searchedQuery: string;
     updateSearchedQuery: (query: string) => void;
-    listings: ListingProps[];
+    listingsToShow: ListingProps[];
     addListing: (listing: ListingProps, user: User) => Promise<boolean | string>;
+    getListings: () => Promise<boolean | string>;
 };
 
+type FilterProps = {
+    title: string | null;
+    category: Categories | null;
+};
 const DataContext = createContext<null | DataContext>(null);
 
 export const useDataContext = () => {
@@ -21,15 +25,34 @@ export const useDataContext = () => {
 };
 
 function DataContextProvider({children}: {children: ReactNode}) {
-    const [searchedQuery, setSearchedQuery] = useState<string>("");
     const [listings, setListings] = useState<ListingProps[]>([]);
+    const [listingsToShow, setListingsToShow] = useState<ListingProps[]>([]);
+    const [filterConfig, setFilterConfig] = useState<FilterProps>({
+        title: null,
+        category: null,
+    });
     const navigate = useNavigate();
 
     const updateSearchedQuery = (query: string) => {
-        setSearchedQuery(query);
+        setFilterConfig((prev) => ({...prev, title: query}));
+        // filterListingsByName(query);
         navigate(`/listings/`);
-        getListings();
     };
+
+    useEffect(() => {
+        setListingsToShow((prev) => {
+            const {title, category} = filterConfig;
+            let temp = listings;
+            if (title) {
+                temp = temp.filter((listing) => listing.title.toLowerCase().includes(title.toLowerCase()));
+            }
+            if (category) {
+                temp = temp.filter((listing) => listing.category === category);
+            }
+            return temp;
+        });
+    }, [filterConfig, listings]);
+
     const addListing = async (listing: ListingProps, user: User): Promise<boolean | string> => {
         let response;
         try {
@@ -50,6 +73,7 @@ function DataContextProvider({children}: {children: ReactNode}) {
             if (response) {
                 console.log(response);
                 setListings(response);
+                setListingsToShow(response);
                 return true;
             }
         } catch (error: any) {
@@ -58,7 +82,16 @@ function DataContextProvider({children}: {children: ReactNode}) {
         return false;
     };
 
-    return <DataContext.Provider value={{searchedQuery, updateSearchedQuery, listings, addListing}}>{children}</DataContext.Provider>;
+    // const filterListingsByName = (query: string) => {
+    //     const _listings = listingsToShow.filter((listing) => listing.title.toLowerCase().includes(query.toLowerCase()));
+    //     setListingsToShow(_listings);
+    // };
+
+    // const filterListingsByCategory = () => {
+    //     const _listings = listingsToShow.filter((listing) => listing.category !== filterConfig.category);
+    //     setListingsToShow(_listings);
+    // };
+    return <DataContext.Provider value={{updateSearchedQuery, addListing, getListings, listingsToShow}}>{children}</DataContext.Provider>;
 }
 
 export default DataContextProvider;

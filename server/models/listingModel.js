@@ -10,6 +10,10 @@ const listingSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+        duration: {
+            type: Number,
+            required: true,
+        },
         description: {
             type: String,
             required: true,
@@ -20,6 +24,10 @@ const listingSchema = new mongoose.Schema(
         },
         promoPrice: {
             type: Number,
+            required: true,
+        },
+        username: {
+            type: String,
             required: true,
         },
         sellerId: {

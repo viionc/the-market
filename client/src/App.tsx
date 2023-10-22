@@ -7,6 +7,7 @@ import {useAuthContext} from "./context/AuthContext";
 import {ToastContainer, toast} from "react-toastify";
 import {useEffect} from "react";
 import "react-toastify/dist/ReactToastify.css";
+import AddListingForm from "./components/AddListingForm";
 
 function App() {
     const {error} = useAuthContext();
@@ -22,6 +23,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/listings/" element={<ListingsPage />}></Route>
+                <Route path="/listings/add" element={<AddListingForm />}></Route>
             </Routes>
         </>
     );

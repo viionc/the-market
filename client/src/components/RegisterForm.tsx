@@ -11,7 +11,7 @@ function RegisterForm({changeForm}: {changeForm: () => void}) {
     const {register} = useAuthContext();
 
     const handleSubmit = (values: MyFormValues) => {
-        register({username: values.username, password: values.password, email: values.email, token: ""});
+        register({username: values.username, password: values.password, email: values.email, token: "", id: ""});
     };
 
     const handleValidate = (values: MyFormValues) => {
