@@ -5,7 +5,7 @@ import authService from "../services/AuthService";
 type AuthContext = {
     user: User | null;
     register: (user: User) => void;
-    login: (user: User) => void;
+    login: (email: string, password: string) => void;
     error: string | null;
     setError: React.Dispatch<React.SetStateAction<string | null>>;
 };
@@ -36,10 +36,10 @@ function AuthContextProvider({children}: {children: ReactNode}) {
             console.log(error.response.data.message);
         }
     };
-    const login = async (user: User) => {
+    const login = async (email: string, password: string) => {
         let response;
         try {
-            response = await authService.loginUser(user);
+            response = await authService.loginUser(email, password);
             if (response) {
                 setUser(response);
             }

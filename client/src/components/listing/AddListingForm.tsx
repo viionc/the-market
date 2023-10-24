@@ -1,10 +1,10 @@
 import {Field, Form, Formik} from "formik";
 import {useNavigate} from "react-router-dom";
-import {useDataContext} from "../context/DataContext";
-import {useAuthContext} from "../context/AuthContext";
-import {Categories} from "../types/types";
+import {useDataContext} from "../../context/DataContext";
+import {useAuthContext} from "../../context/AuthContext";
+import {Categories} from "../../types/types";
 import {toast} from "react-toastify";
-import {categories} from "../types/constants";
+import {categories} from "../../types/constants";
 
 interface ListingFormProps {
     title: string;
@@ -128,7 +128,6 @@ function AddListingForm() {
                                 }`}
                                 id="durationInDays"
                                 name="durationInDays"
-                                defaultValue={props.initialValues.durationInDays}
                                 as="select">
                                 <option value={3}>3 days</option>
                                 <option value={5}>5 days</option>
@@ -196,7 +195,7 @@ const handleValidate = (values: ListingFormProps) => {
         errors.originalPrice = "You can't list an item for free.";
     }
     if (!durationInDays) {
-        errors.durationInDays = "Have to provide duration";
+        errors.durationInDays = "Have to provide a duration.";
     }
     if (errors.title !== "" || errors.category !== "" || errors.description !== "" || errors.originalPrice !== "") return errors;
     return {};

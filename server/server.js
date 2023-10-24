@@ -2,8 +2,11 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const port = process.env.PORT || 5000;
 const connectDB = require("./config/db");
+const {startTickInterval, stopTickInterval} = require("./tickHandler");
 
 connectDB();
+
+startTickInterval();
 
 const app = express();
 app.use(express.json());

@@ -17,6 +17,7 @@ export type ListingProps = {
     description: string;
     image: FileList | null | string;
     promoPrice: number;
+    _id?: string;
 };
 
 export type AuthStatus = {
@@ -26,6 +27,7 @@ export type AuthStatus = {
     message: string;
 };
 export type Categories =
+    | "All"
     | "Antiques"
     | "Art"
     | "Books"

@@ -1,4 +1,4 @@
-import CategoriesRow from "./CategoriesRow";
+import CategoriesRow from "./heading/CategoriesRow";
 import PopularListingsBanner from "./PopularListingsBanner";
 
 function Home() {

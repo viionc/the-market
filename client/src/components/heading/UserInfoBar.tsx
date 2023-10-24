@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
-import {useAuthContext} from "../context/AuthContext";
-import {useDataContext} from "../context/DataContext";
-import {ListingProps} from "../types/types";
+import {useAuthContext} from "../../context/AuthContext";
+import {useDataContext} from "../../context/DataContext";
+import {ListingProps} from "../../types/types";
 
 function UserInfoBar() {
     const {user} = useAuthContext();

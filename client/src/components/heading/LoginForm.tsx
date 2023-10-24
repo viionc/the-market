@@ -1,12 +1,10 @@
 import {FormEvent, useState} from "react";
-import {useAuthContext} from "../context/AuthContext";
+import {useAuthContext} from "../../context/AuthContext";
 
 function LoginForm({changeForm}: {changeForm: () => void}) {
     const [formState, setFormState] = useState({
-        username: "",
         email: "",
         password: "",
-        token: "",
     });
     const {login} = useAuthContext();
 
@@ -19,7 +17,7 @@ function LoginForm({changeForm}: {changeForm: () => void}) {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        login(formState);
+        login(formState.email, formState.password);
     };
     return (
         <div className="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">

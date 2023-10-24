@@ -1,6 +1,8 @@
-import React from "react";
+import {categories} from "../../types/constants";
+import {useDataContext} from "../../context/DataContext";
 
 function ListingsSidebar() {
+    const {updateFilter} = useDataContext();
     return (
         <section className="w-1/5 pt-6">
             <div className="flex flex-col gap-2">
@@ -10,6 +12,14 @@ function ListingsSidebar() {
                         <option value="price">Price</option>
                         <option value="title">Date created</option>
                     </select>
+                </div>
+                <div className="flex flex-col gap-1">
+                    <label>Categories:</label>
+                    {categories.map((category, index) => (
+                        <span key={index} className="cursor-pointer hover:underline" onClick={() => updateFilter("category", category)}>
+                            {category}
+                        </span>
+                    ))}
                 </div>
             </div>
         </section>

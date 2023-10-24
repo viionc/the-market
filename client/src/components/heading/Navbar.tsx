@@ -1,14 +1,14 @@
-import {FormEvent, useEffect, useState} from "react";
+import {FormEvent, useState} from "react";
 import LoginRegisterWrapper from "./LoginRegisterWrapper";
-import {useNavigate, useSearchParams} from "react-router-dom";
-import {useDataContext} from "../context/DataContext";
-import {useAuthContext} from "../context/AuthContext";
+import {useNavigate} from "react-router-dom";
+import {useDataContext} from "../../context/DataContext";
+import {useAuthContext} from "../../context/AuthContext";
 import UserInfoBar from "./UserInfoBar";
 
 function Navbar() {
     const [show, setShow] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
-    const {updateSearchedQuery} = useDataContext();
+    const {updateFilter} = useDataContext();
     const {user} = useAuthContext();
     const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ function Navbar() {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        updateSearchedQuery(search);
+        updateFilter("title", search);
     };
 
     return (

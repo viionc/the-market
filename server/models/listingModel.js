@@ -10,7 +10,11 @@ const listingSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
-        duration: {
+        category: {
+            type: String,
+            required: true,
+        },
+        durationInDays: {
             type: Number,
             required: true,
         },
