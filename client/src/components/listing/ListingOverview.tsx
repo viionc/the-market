@@ -1,15 +1,27 @@
 import {useParams} from "react-router-dom";
-import {ListingProps} from "../../types/types";
 import {useDataContext} from "../../context/DataContext";
 import {calculateRemainingTime} from "../../utils/helpers";
+import {useAuthContext} from "../../context/AuthContext";
+import dataService from "../../services/DataService";
 
 function ListingOverview() {
     const params = useParams();
     const {listingsToShow} = useDataContext();
+    const {user} = useAuthContext();
     const listing = listingsToShow.find((_listing) => _listing._id === params.id);
     if (!listing) return <div className="text-4xl py-4 ">Listing with this ID doesn't exist.</div>;
 
     const price = listing.promoPrice < listing.originalPrice ? listing.promoPrice : listing.originalPrice;
+
+    const handlePurchase = async () => {
+        if (!user) return;
+        try {
+            const response = await dataService.purchaseListing(user, listing);
+            console.log(response);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     return (
         <section className="container">
@@ -21,7 +33,11 @@ function ListingOverview() {
                         <p className="text-gray-400">Ends in: {calculateRemainingTime(listing.durationInDays, listing.createdAt)}</p>
                         <p className="text-2xl">{price}$</p>
                     </div>
-                    <button className="bg-mainGreen px-2 py-1 text-xl rounded-md hover:scale-105 active:ring-2 font-semibold">Buy now</button>
+                    <button
+                        className="bg-mainGreen px-2 py-1 text-xl rounded-md hover:scale-105 active:ring-2 font-semibold"
+                        onClick={handlePurchase}>
+                        Buy now
+                    </button>
                 </div>
             </div>
         </section>

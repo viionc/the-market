@@ -1,5 +1,5 @@
 import axios from "axios";
-import {ListingProps} from "../types/types";
+import {ListingProps, User} from "../types/types";
 
 const API_URL = "/api/listings/";
 let isLoading = false;
@@ -28,9 +28,26 @@ const getListings = async () => {
     return response.data;
 };
 
+const purchaseListing = async (user: User, listing: ListingProps) => {
+    if (isLoading) return;
+    isLoading = true;
+    const config = {
+        headers: {
+            Authorization: `Bearer ${user.token}`,
+        },
+    };
+    const request = {
+        listingId: listing._id,
+        buyerId: user.id,
+    };
+    const response = await axios.post(`${API_URL}purchase`, request, config);
+    return response;
+};
+
 const dataService = {
     addListing,
     getListings,
+    purchaseListing,
 };
 
 export default dataService;

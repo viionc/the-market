@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Listings = require("../models/listingModel");
+const BoughtListings = require("../models/boughtListingModel");
 //@desc Get data
 //@route GET /api/listings
 //@access Public
@@ -36,4 +37,21 @@ const removeListing = asyncHandler(async (req, res) => {
     res.status(200).json({message: "Listing deleted"});
 });
 
-module.exports = {getListingsFromDatabase, addListingToDatabase, getUserListings, removeListing};
+//@desc Buy Listing
+//@route POST /api/listings
+//@access Private
+const purchaseListing = asyncHandler(async (req, res) => {
+    const {buyerId, listingId} = req.body;
+    if (!buyerId || !listingId) {
+        res.status(400).json({message: "Missing buyerId or listingId."});
+    }
+    const listing = await Listings.findById(listingId);
+    if (!listing) {
+        res.status(404).json({message: "Listing not found"});
+    }
+    await BoughtListings.create({sellerId: listing.sellerId, buyerId: buyerId, boughtDate: new Date(), itemId: listingId});
+    await listing.deleteOne();
+    res.status(200).send("Succesfuly bought the item.");
+});
+
+module.exports = {getListingsFromDatabase, addListingToDatabase, getUserListings, removeListing, purchaseListing};
