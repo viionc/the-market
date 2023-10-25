@@ -26,10 +26,18 @@ const loginUser = async (email: string, password: string) => {
     return response.data;
 };
 
+const logoutUser = async () => {
+    if (isLoading) return;
+    isLoading = true;
+    localStorage.removeItem("user");
+    isLoading = false;
+    return;
+};
+
 const authService = {
     registerUser,
     loginUser,
-    status,
+    logoutUser,
 };
 
 export default authService;

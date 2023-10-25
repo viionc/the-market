@@ -1,7 +1,7 @@
 import {FormEvent, useState} from "react";
 import {useAuthContext} from "../../context/AuthContext";
 
-function LoginForm({changeForm}: {changeForm: () => void}) {
+function LoginForm({changeForm, handleShow}: {changeForm: () => void; handleShow: () => void}) {
     const [formState, setFormState] = useState({
         email: "",
         password: "",
@@ -17,6 +17,7 @@ function LoginForm({changeForm}: {changeForm: () => void}) {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+        handleShow();
         login(formState.email, formState.password);
     };
     return (

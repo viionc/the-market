@@ -23,12 +23,11 @@ const getListings = async () => {
     isLoading = true;
 
     const response = await axios.get(API_URL);
-
     isLoading = false;
     return response.data;
 };
 
-const purchaseListing = async (user: User, listing: ListingProps) => {
+const purchase = async (user: User, listingId: string) => {
     if (isLoading) return;
     isLoading = true;
     const config = {
@@ -37,17 +36,18 @@ const purchaseListing = async (user: User, listing: ListingProps) => {
         },
     };
     const request = {
-        listingId: listing._id,
+        listingId: listingId,
         buyerId: user.id,
     };
     const response = await axios.post(`${API_URL}purchase`, request, config);
+    isLoading = false;
     return response;
 };
 
 const dataService = {
     addListing,
     getListings,
-    purchaseListing,
+    purchase,
 };
 
 export default dataService;

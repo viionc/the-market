@@ -5,7 +5,8 @@ const BoughtListings = require("../models/boughtListingModel");
 //@route GET /api/listings
 //@access Public
 const getListingsFromDatabase = asyncHandler(async (req, res) => {
-    const listings = await Listings.find();
+    let listings = await Listings.find();
+    if (!listings) listings = [];
     res.status(200).json(listings);
 });
 

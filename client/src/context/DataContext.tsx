@@ -1,5 +1,5 @@
 import {ReactNode, createContext, useContext, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {Categories, ListingProps, User} from "../types/types";
 import dataService from "../services/DataService";
 
@@ -8,6 +8,8 @@ type DataContext = {
     listingsToShow: ListingProps[];
     addListing: (listing: ListingProps, user: User) => Promise<boolean | string>;
     getListings: () => Promise<boolean | string>;
+    purchaseListing: (user: User, listingId: string) => Promise<boolean>;
+    filterConfig: FilterProps;
 };
 
 type FilterProps = {
@@ -32,11 +34,13 @@ function DataContextProvider({children}: {children: ReactNode}) {
         category: "All",
     });
     const navigate = useNavigate();
+    const location = useLocation();
 
     const updateFilter = (key: keyof FilterProps, value: string) => {
         setFilterConfig((prev) => ({...prev, [key]: value}));
-        // filterListingsByName(query);
-        navigate(`/listings/`);
+        if (location.pathname !== "/listings/") {
+            navigate(`/listings/`);
+        }
     };
 
     useEffect(() => {
@@ -72,7 +76,6 @@ function DataContextProvider({children}: {children: ReactNode}) {
         try {
             response = await dataService.getListings();
             if (response) {
-                console.log(response);
                 setListings(response);
                 setListingsToShow(response);
                 return true;
@@ -83,16 +86,25 @@ function DataContextProvider({children}: {children: ReactNode}) {
         return false;
     };
 
-    // const filterListingsByName = (query: string) => {
-    //     const _listings = listingsToShow.filter((listing) => listing.title.toLowerCase().includes(query.toLowerCase()));
-    //     setListingsToShow(_listings);
-    // };
+    const purchaseListing = async (user: User, listingId: string): Promise<boolean> => {
+        let response;
+        try {
+            response = await dataService.purchase(user, listingId);
+            if (response) {
+                await getListings();
+                return true;
+            }
+        } catch (err) {
+            console.log(err);
+        }
+        return false;
+    };
 
-    // const filterListingsByCategory = () => {
-    //     const _listings = listingsToShow.filter((listing) => listing.category !== filterConfig.category);
-    //     setListingsToShow(_listings);
-    // };
-    return <DataContext.Provider value={{updateFilter, addListing, getListings, listingsToShow}}>{children}</DataContext.Provider>;
+    return (
+        <DataContext.Provider value={{updateFilter, addListing, getListings, listingsToShow, purchaseListing, filterConfig}}>
+            {children}
+        </DataContext.Provider>
+    );
 }
 
 export default DataContextProvider;

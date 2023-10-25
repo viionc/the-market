@@ -2,7 +2,7 @@ import {categories} from "../../types/constants";
 import {useDataContext} from "../../context/DataContext";
 
 function ListingsSidebar() {
-    const {updateFilter} = useDataContext();
+    const {updateFilter, filterConfig} = useDataContext();
     return (
         <section className="w-1/5 pt-6">
             <div className="flex flex-col gap-2">
@@ -16,7 +16,10 @@ function ListingsSidebar() {
                 <div className="flex flex-col gap-1">
                     <label>Categories:</label>
                     {categories.map((category, index) => (
-                        <span key={index} className="cursor-pointer hover:underline" onClick={() => updateFilter("category", category)}>
+                        <span
+                            key={index}
+                            className={`cursor-pointer hover:underline ${filterConfig.category === category ? "font-semibold" : ""}`}
+                            onClick={() => updateFilter("category", category)}>
                             {category}
                         </span>
                     ))}

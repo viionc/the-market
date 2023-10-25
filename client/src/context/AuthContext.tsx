@@ -8,6 +8,7 @@ type AuthContext = {
     login: (email: string, password: string) => void;
     error: string | null;
     setError: React.Dispatch<React.SetStateAction<string | null>>;
+    logout: () => void;
 };
 
 const AuthContext = createContext<AuthContext | null>(null);
@@ -48,7 +49,11 @@ function AuthContextProvider({children}: {children: ReactNode}) {
             console.log(error.response.data.message);
         }
     };
-    return <AuthContext.Provider value={{user, register, login, error, setError}}>{children}</AuthContext.Provider>;
+    const logout = () => {
+        authService.logoutUser();
+        setUser(null);
+    };
+    return <AuthContext.Provider value={{user, register, login, error, setError, logout}}>{children}</AuthContext.Provider>;
 }
 
 export default AuthContextProvider;

@@ -21,9 +21,9 @@ function LoginRegisterWrapper({show, handleShow}: {show: boolean; handleShow: ()
                 initial={{top: "48px"}}
                 animate={{top: "74px"}}
                 transition={{duration: 0.3}}
-                className="absolute right-28 mx-auto flex flex-col items-center justify-center px-6 py-8 lg:py-0">
-                {formType === "login" && <LoginForm changeForm={changeForm} />}
-                {formType === "register" && <RegisterForm changeForm={changeForm} />}
+                className="z-10 absolute right-28 mx-auto flex flex-col items-center justify-center px-6 py-8 lg:py-0">
+                {formType === "login" && <LoginForm changeForm={changeForm} handleShow={handleShow} />}
+                {formType === "register" && <RegisterForm changeForm={changeForm} handleShow={handleShow} />}
             </motion.div>
         )
     );

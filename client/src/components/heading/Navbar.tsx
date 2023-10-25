@@ -40,11 +40,11 @@ function Navbar() {
                         Search
                     </button>
                 </form>
-                <div className="ms-auto">
+                <div className="ms-auto flex justify-end w-[25rem]">
                     {!user ? (
                         <button
                             onClick={handleShow}
-                            className="w-24 bg-mainGreen border-mainGreen rounded-lg px-5 py-2 font-semibold transition text-zinc-600 hover:scale-105 hover:border hover:border-b-4 hover:border-e-4 hover:border-zinc-600 focus:ring-4">
+                            className="bg-mainGreen border-mainGreen rounded-lg px-5 py-2 font-semibold transition text-zinc-600 hover:scale-105 hover:border hover:border-b-4 hover:border-e-4 hover:border-zinc-600 focus:ring-4">
                             Login
                         </button>
                     ) : (

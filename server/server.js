@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use("/api/listings", require("./routes/dataRoute"));
-app.use("/api/auth", require("./routes/usersRoute"));
+app.use("/api/auth", require("./routes/authRoute"));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

@@ -7,10 +7,11 @@ interface MyFormValues {
     password2: string;
 }
 
-function RegisterForm({changeForm}: {changeForm: () => void}) {
+function RegisterForm({changeForm, handleShow}: {changeForm: () => void; handleShow: () => void}) {
     const {register} = useAuthContext();
 
     const handleSubmit = (values: MyFormValues) => {
+        handleShow();
         register({username: values.username, password: values.password, email: values.email, token: "", id: ""});
     };
 
