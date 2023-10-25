@@ -17,6 +17,7 @@ export type ListingProps = {
     description: string;
     image: FileList | null | string;
     promoPrice: number;
+    sellerId: string;
     _id?: string;
 };
 

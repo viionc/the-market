@@ -27,6 +27,17 @@ const getListings = async () => {
     return response.data;
 };
 
+const getSellersListings = async (userId: string) => {
+    if (isLoading) return;
+    isLoading = true;
+
+    const response = await axios.get(`${API_URL}${userId}`);
+    console.log(response);
+    isLoading = false;
+    console.log(response);
+    return response.data;
+};
+
 const purchase = async (user: User, listingId: string) => {
     if (isLoading) return;
     isLoading = true;
@@ -48,6 +59,7 @@ const dataService = {
     addListing,
     getListings,
     purchase,
+    getSellersListings,
 };
 
 export default dataService;

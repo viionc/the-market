@@ -3,13 +3,19 @@ import {useDataContext} from "../../context/DataContext";
 import {calculateRemainingTime} from "../../utils/helpers";
 import {useAuthContext} from "../../context/AuthContext";
 import {toast} from "react-toastify";
+import {useEffect} from "react";
 
 function ListingOverview() {
     const params = useParams();
-    const {listingsToShow, purchaseListing} = useDataContext();
+    const {listingsToShow, purchaseListing, getListings, getListingsByUserId} = useDataContext();
     const {user} = useAuthContext();
     const navigate = useNavigate();
     const listing = listingsToShow.find((_listing) => _listing._id === params.id);
+
+    useEffect(() => {
+        getListings();
+    }, []);
+
     if (!listing) return <div className="text-4xl py-4 ">Listing with this ID doesn't exist.</div>;
 
     const price = listing.promoPrice < listing.originalPrice ? listing.promoPrice : listing.originalPrice;
@@ -23,6 +29,11 @@ function ListingOverview() {
         } else {
             toast.error("Something went wrong.");
         }
+    };
+
+    const showSellersListings = async () => {
+        getListingsByUserId(listing.sellerId);
+        navigate(`/listings/user/${listing.sellerId}`);
     };
 
     return (
@@ -41,7 +52,9 @@ function ListingOverview() {
                         <p>
                             Seller: <span className="cursor-pointer hover:underline font-semibold">{listing.username}</span>
                         </p>
-                        <p className="hover:underline cursor-pointer text-sm text-gray-500">Check more items from this user.</p>
+                        <p className="hover:underline cursor-pointer text-sm text-gray-500" onClick={showSellersListings}>
+                            Check more items from this user.
+                        </p>
                     </div>
                     <button
                         className="bg-mainGreen px-2 py-1 text-xl rounded-md hover:scale-105 active:ring-2 font-semibold"

@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Listings = require("../models/listingModel");
+const Users = require("../models/userModel");
 const BoughtListings = require("../models/boughtListingModel");
 //@desc Get data
 //@route GET /api/listings
@@ -24,6 +25,20 @@ const addListingToDatabase = asyncHandler(async (req, res) => {
     }
     const newListing = await Listings.create({...req.body, sellerId: req.user.id});
     res.status(200).json(newListing);
+});
+
+const getSellerListingsByUserId = asyncHandler(async (req, res) => {
+    const {id} = req.params;
+    if (!id) {
+        res.status(400).json({message: "Please provide a listing id."});
+    }
+    const user = await Users.findById(id);
+    console.log(user);
+    if (!user) {
+        res.status(400).json({message: "Couldn't find user with that id."});
+    }
+    const sellerListings = await Listings.find({sellerId: id});
+    res.status(200).json({username: user.username, listings: sellerListings});
 });
 
 const removeListing = asyncHandler(async (req, res) => {
@@ -55,4 +70,4 @@ const purchaseListing = asyncHandler(async (req, res) => {
     res.status(200).send("Succesfuly bought the item.");
 });
 
-module.exports = {getListingsFromDatabase, addListingToDatabase, getUserListings, removeListing, purchaseListing};
+module.exports = {getListingsFromDatabase, addListingToDatabase, getUserListings, removeListing, purchaseListing, getSellerListingsByUserId};

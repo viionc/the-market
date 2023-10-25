@@ -1,20 +1,24 @@
 import {ReactNode, createContext, useContext, useEffect, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
 import {Categories, ListingProps, User} from "../types/types";
 import dataService from "../services/DataService";
+import {useLocation, useNavigate} from "react-router-dom";
 
 type DataContext = {
     updateFilter: (key: keyof FilterProps, query: string) => void;
     listingsToShow: ListingProps[];
+    userListingsToShow: ListingProps[];
     addListing: (listing: ListingProps, user: User) => Promise<boolean | string>;
     getListings: () => Promise<boolean | string>;
     purchaseListing: (user: User, listingId: string) => Promise<boolean>;
+    getListingsByUserId: (userId: string) => Promise<boolean>;
+
     filterConfig: FilterProps;
 };
 
 type FilterProps = {
     title: string | null;
     category: Categories | null;
+    username: string | null;
 };
 const DataContext = createContext<null | DataContext>(null);
 
@@ -25,38 +29,45 @@ export const useDataContext = () => {
     }
     return context;
 };
+const filter = (filterConfig: FilterProps, data: ListingProps[]) => {
+    const {title, category} = filterConfig;
+    let temp = data;
+    if (title) {
+        temp = temp.filter((listing) => listing.title.toLowerCase().includes(title.toLowerCase()));
+    }
+    if (category && category !== "All") {
+        temp = temp.filter((listing) => listing.category === category);
+    }
+    return temp;
+};
 
 function DataContextProvider({children}: {children: ReactNode}) {
     const [listings, setListings] = useState<ListingProps[]>([]);
     const [listingsToShow, setListingsToShow] = useState<ListingProps[]>([]);
+    const [userListings, setUserListings] = useState<ListingProps[]>([]);
+    const [userListingsToShow, setUserListingsToshow] = useState<ListingProps[]>([]);
     const [filterConfig, setFilterConfig] = useState<FilterProps>({
         title: null,
         category: "All",
+        username: null,
     });
     const navigate = useNavigate();
     const location = useLocation();
 
     const updateFilter = (key: keyof FilterProps, value: string) => {
         setFilterConfig((prev) => ({...prev, [key]: value}));
-        if (location.pathname !== "/listings/") {
-            navigate(`/listings/`);
+        if (location.pathname === "/") {
+            navigate("/listings/");
         }
     };
 
     useEffect(() => {
-        setListingsToShow(() => {
-            const {title, category} = filterConfig;
-            let temp = listings;
-            if (title) {
-                temp = temp.filter((listing) => listing.title.toLowerCase().includes(title.toLowerCase()));
-            }
-            if (category && category !== "All") {
-                temp = temp.filter((listing) => listing.category === category);
-            }
-
-            return temp;
-        });
-    }, [filterConfig, listings]);
+        if (filterConfig.username) {
+            setUserListingsToshow(() => filter(filterConfig, userListings));
+        } else {
+            setListingsToShow(() => filter(filterConfig, listings));
+        }
+    }, [filterConfig, listings, userListings]);
 
     const addListing = async (listing: ListingProps, user: User): Promise<boolean | string> => {
         let response;
@@ -100,8 +111,24 @@ function DataContextProvider({children}: {children: ReactNode}) {
         return false;
     };
 
+    const getListingsByUserId = async (userId: string): Promise<boolean> => {
+        let response;
+        try {
+            response = await dataService.getSellersListings(userId);
+            if (response) {
+                setUserListings(response.listings);
+                filterConfig.username = response.username;
+                return true;
+            }
+        } catch (err) {
+            console.log(err);
+        }
+        return false;
+    };
+
     return (
-        <DataContext.Provider value={{updateFilter, addListing, getListings, listingsToShow, purchaseListing, filterConfig}}>
+        <DataContext.Provider
+            value={{updateFilter, addListing, getListings, listingsToShow, purchaseListing, filterConfig, getListingsByUserId, userListingsToShow}}>
             {children}
         </DataContext.Provider>
     );

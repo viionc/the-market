@@ -9,9 +9,11 @@ import {useEffect} from "react";
 import "react-toastify/dist/ReactToastify.css";
 import AddListingForm from "./components/listing/AddListingForm";
 import ListingOverview from "./components/listing/ListingOverview";
+import {useDataContext} from "./context/DataContext";
 
 function App() {
     const {error} = useAuthContext();
+    const {listingsToShow, userListingsToShow} = useDataContext();
     useEffect(() => {
         if (error) {
             toast.error(error);
@@ -23,9 +25,11 @@ function App() {
             <Navbar />
             <Routes>
                 <Route path="/" element={<Home />}></Route>
-                <Route path="/listings/" element={<ListingsPage />}></Route>
+                <Route path="/listings/" element={<ListingsPage data={listingsToShow} />}></Route>
                 <Route path="/listings/add" element={<AddListingForm />}></Route>
                 <Route path="/listings/:id" element={<ListingOverview />} />
+                <Route path="/listings/user/:id" element={<ListingsPage data={userListingsToShow} />} />
+                <Route path="/user/:id" element={<></>} />
             </Routes>
         </>
     );
