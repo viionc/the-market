@@ -8,7 +8,7 @@ const {startTickInterval, stopTickInterval} = require("../tickHandler");
 connectDB();
 startTickInterval();
 
-const whitelist = ["https://the-market-beryl.vercel.app/", "http://localhost:5173/"];
+const whitelist = ["https://the-market-beryl.vercel.app", "http://localhost:5173"];
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {
@@ -19,8 +19,8 @@ const corsOptions = {
     },
 };
 const app = express();
-app.use(express.json());
 app.use(cors(corsOptions));
+app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use("/api/listings", require("../routes/dataRoute"));
 app.use("/api/auth", require("../routes/authRoute"));
