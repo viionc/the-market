@@ -20,7 +20,9 @@ You will need a couple env variables in the-market/ directory:
 (you might need to change your whitelist IP in server/api/index.js for cors thingy)
 
 And one in client/ directory:
+
 ![image](https://github.com/viionc/the-market/assets/6730164/7d684f5b-825e-43c9-98d3-15c6e0965e72)
+
 URL same as API_URL for backend.
 
 ## todo
