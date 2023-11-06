@@ -1,6 +1,6 @@
 # The Market
 A Fullstack MERN app for online marketplace.
-Demo: https://the-market-beryl.vercel.app/listings/
+Demo: https://the-market-beryl.vercel.app/
 
 
 To run the app locally run this command from the-market/ directory:
