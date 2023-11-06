@@ -15,7 +15,7 @@ Current features:
 - login/register
 - browse listings including categories or user specific
 - add listings (no images atm, need to figure a way for this, because apparently you shouldn't store images in mongodb idk)
-- buy listings
+- buy listings (no payment or anything, listings just disappear with a notification that you bought it for now)
 - listings are being removed when they expire
   
 
