@@ -4,7 +4,7 @@ import dataService from "../services/DataService";
 import {useLocation, useNavigate} from "react-router-dom";
 
 type DataContext = {
-    updateFilter: (key: keyof FilterProps, query: string) => void;
+    updateFilter: (key: keyof FilterProps, query: string | null) => void;
     listingsToShow: ListingProps[];
     userListingsToShow: ListingProps[];
     addListing: (listing: ListingProps, user: User) => Promise<boolean | string>;
@@ -54,7 +54,7 @@ function DataContextProvider({children}: {children: ReactNode}) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const updateFilter = (key: keyof FilterProps, value: string) => {
+    const updateFilter = (key: keyof FilterProps, value: string | null) => {
         setFilterConfig((prev) => ({...prev, [key]: value}));
         if (location.pathname === "/") {
             navigate("/listings/");

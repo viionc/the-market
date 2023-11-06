@@ -6,13 +6,14 @@ import {ListingProps} from "../../types/types";
 import {useParams} from "react-router-dom";
 
 function ListingsPage({data}: {data: ListingProps[]}) {
-    const {getListings, filterConfig, getListingsByUserId} = useDataContext();
+    const {getListings, filterConfig, getListingsByUserId, updateFilter} = useDataContext();
     const params = useParams();
 
     useEffect(() => {
         if (params.id) {
             getListingsByUserId(params.id);
         } else {
+            updateFilter("username", null);
             getListings();
         }
     }, []);
