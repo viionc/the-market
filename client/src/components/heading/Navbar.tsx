@@ -1,6 +1,6 @@
 import {FormEvent, useState} from "react";
 import LoginRegisterWrapper from "./LoginRegisterWrapper";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useDataContext} from "../../context/DataContext";
 import {useAuthContext} from "../../context/AuthContext";
 import UserInfoBar from "./UserInfoBar";

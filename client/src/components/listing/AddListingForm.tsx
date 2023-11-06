@@ -30,7 +30,7 @@ function AddListingForm() {
     const handleSubmit = async (values: ListingFormProps) => {
         if (!user) return;
         const response = await addListing(
-            {...values, username: user.username, promoPrice: values.originalPrice, image: "asd", createdAt: "", updatedAt: ""},
+            {...values, username: user.username, sellerId: user.id, promoPrice: values.originalPrice, image: "asd", createdAt: "", updatedAt: ""},
             user
         );
         if (response) {
@@ -81,11 +81,13 @@ function AddListingForm() {
                                 name="category"
                                 as="select">
                                 <option value="choose">--Choose category--</option>
-                                {categories.map((category) => (
-                                    <option key={category} value={category}>
-                                        {category}
-                                    </option>
-                                ))}
+                                {categories
+                                    .filter((category) => category !== "All")
+                                    .map((category) => (
+                                        <option key={category} value={category}>
+                                            {category}
+                                        </option>
+                                    ))}
                             </Field>
                         </div>
                         <div className="w-full">
