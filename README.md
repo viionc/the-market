@@ -21,7 +21,7 @@ You will need a couple env variables in the-market/ directory:
 
 And one in client/ directory:
 
-![image](https://github.com/viionc/the-market/assets/6730164/7d684f5b-825e-43c9-98d3-15c6e0965e72)
+![image](https://github.com/viionc/the-market/assets/6730164/85532e79-9b2e-4126-941b-bd9914ee8e8d)
 
 URL same as API_URL for backend.
 
